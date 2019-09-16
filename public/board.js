@@ -17,18 +17,18 @@ export default class Board {
 
     insert(puzzle) {
         var newBoard = this.board
-        for (var i = 0; i < puzzle.length; i++) {
-            for (var j = 0; j < puzzle[i].length; j++) {
+        console.log("insert")
+        for (var i = 0; i < puzzle.shape.length; i++) {
+            for (var j = 0; j < puzzle.shape[i].length; j++) {
                 if (newBoard[i + puzzle.pos.x][j + puzzle.pos.y] == -1) {
-                    newBoard[i + puzzle.pos.x][j + puzzle.pos.y] = puzzle[i][j]
-                } else if (newBoard[i + puzzle.pos.x][j + puzzle.pos.y] != -1 && puzzle[i][j] != -1) {
+                    newBoard[i + puzzle.pos.x][j + puzzle.pos.y] = puzzle.shape[i][j]
+                } else if (newBoard[i + puzzle.shape.pos.x][j + puzzle.shape.pos.y] != -1 && puzzle.shape[i][j] != -1) {
                     return false;
                 }
             }
         }
-
         this.board = newBoard
-        calculateFitness()
+        this.calculateFitness()
         return true;
     }
 
@@ -47,5 +47,6 @@ export default class Board {
 
     show () {
         console.log(this.board)
+        console.log(this.fitness)
     }
 }
