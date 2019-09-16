@@ -1,4 +1,4 @@
-const obj = class {
+export default class Puzzle {
     constructor(pos, rotate, shape) {
         this.pos = pos;
         this.rotate = rotate;
@@ -20,5 +20,3 @@ const obj = class {
     }
 
 }
-
-export default obj

@@ -1,10 +1,10 @@
-const obj = class {
+export default class Board {
     constructor(length, width) {
         this.length = length
         this.width = width
         this.board = createArray(length, width)
         this.fitness = 0;
-        init()
+        this.init()
     }
 
     init() {
@@ -15,13 +15,13 @@ const obj = class {
         }
     }
 
-    insert(shape) {
+    insert(puzzle) {
         var newBoard = this.board
-        for (var i = 0; i < shape.length; i++) {
-            for (var j = 0; j < shape[i].length; j++) {
-                if (newBoard[i + shape.pos.x][j + shape.pos.y] == -1) {
-                    newBoard[i + shape.pos.x][j + shape.pos.y] = shape[i][j]
-                } else if (newBoard[i + shape.pos.x][j + shape.pos.y] != -1 && shape[i][j] != -1) {
+        for (var i = 0; i < puzzle.length; i++) {
+            for (var j = 0; j < puzzle[i].length; j++) {
+                if (newBoard[i + puzzle.pos.x][j + puzzle.pos.y] == -1) {
+                    newBoard[i + puzzle.pos.x][j + puzzle.pos.y] = puzzle[i][j]
+                } else if (newBoard[i + puzzle.pos.x][j + puzzle.pos.y] != -1 && puzzle[i][j] != -1) {
                     return false;
                 }
             }
@@ -44,6 +44,8 @@ const obj = class {
         this.fitness = fitness
         return fitness
     }
-}
 
-export default obj;
+    show () {
+        console.log(this.board)
+    }
+}
