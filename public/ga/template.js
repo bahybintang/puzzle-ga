@@ -30,9 +30,7 @@ export default {
 
         var template = []
         for (var i = 0; i < count; i++) {
-            // console.log(i)
-            var gotPattern = deepCopy(pattern[getRandomInt(0, 4)])
-            // console.log(gotPattern)
+            var gotPattern = deepCopy(pattern[getRandomInt(0, pattern.length - 1)])
             for (var x = 0; x < gotPattern.length; x++) {
                 for (var y = 0; y < gotPattern[x].length; y++) {
                     if (gotPattern[x][y] != 0) {

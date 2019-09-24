@@ -64,6 +64,6 @@ export default class Board {
 
     show() {
         console.log(this.board)
-        console.log(this.fitness)
+        console.log("fitness: " + this.fitness)
     }
 }
