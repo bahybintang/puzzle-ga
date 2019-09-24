@@ -19,13 +19,6 @@ export default class Board {
 
         if (template != undefined) {
             template.forEach((tmp, i) => {
-                for (var x = 0; x < tmp.length; x++) {
-                    for (var y = 0; y < tmp[x].length; y++) {
-                        if (tmp[x][y] != 0) {
-                            tmp[x][y] = i + 1
-                        }
-                    }
-                }
                 var puzzle = new Puzzle(tmp, { x: getRandomInt(0, this.height - 1), y: getRandomInt(0, this.width - 1) }, getRandomInt(0, 3), getRandomInt(0, 1))
                 this.puzzles.push(puzzle)
                 this.insert(puzzle)

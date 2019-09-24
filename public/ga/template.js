@@ -29,8 +29,18 @@ export default {
         ]
 
         var template = []
-        while (count--) {
-            template.push(pattern[getRandomInt(0, 4)])
+        for (var i = 0; i < count; i++) {
+            // console.log(i)
+            var gotPattern = deepCopy(pattern[getRandomInt(0, 4)])
+            // console.log(gotPattern)
+            for (var x = 0; x < gotPattern.length; x++) {
+                for (var y = 0; y < gotPattern[x].length; y++) {
+                    if (gotPattern[x][y] != 0) {
+                        gotPattern[x][y] = i + 1
+                    }
+                }
+            }
+            template.push(gotPattern)
         }
         return template
     }
