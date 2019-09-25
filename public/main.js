@@ -1,11 +1,11 @@
-import Board from "./ga/board.js"
-import Template from "./ga/template.js"
+import Population from "./ga/population.js"
 
-var template = Template.generateTemplate(1000)
-var boards = []
+var population = new Population(100, 200, 0.1)
 
-for (var i = 0; i < 20; i++) {
-    boards[i] = new Board(10, 10, template)
-    boards[i].show()
+population.showBestBoard()
+
+var buttonNextGen = document.getElementById('nextgen')
+buttonNextGen.onclick = function nextGen() {
+    while (1) setTimeout(population.nextGen(), 1000) 
 }
 

@@ -1,13 +1,14 @@
 import Puzzle from "./puzzle.js"
 
 export default class Board {
-    constructor(height, width, template) {
+    constructor(height, width, template, isChild) {
         this.height = height
         this.width = width
         this.board = createArray(height, width)
         this.fitness = 0
         this.puzzles = []
-        this.init(template)
+        if (isChild == undefined) this.init(template)
+        else this.initChild(template)
     }
 
     init(template) {
@@ -25,6 +26,21 @@ export default class Board {
                 this.puzzles.push(puzzle)
                 this.insert(puzzle)
             });
+        }
+    }
+
+    initChild(puzzles) {
+        for (var i = 0; i < this.board.length; i++) {
+            for (var j = 0; j < this.board[i].length; j++) {
+                this.board[i][j] = 0
+            }
+        }
+
+        if (puzzles != undefined) {
+            puzzles.forEach(puzzle => {
+                this.puzzles.push(puzzle)
+                this.insert(puzzle)
+            })
         }
     }
 
@@ -73,6 +89,7 @@ export default class Board {
         }
 
         var innerHTMLs = ""
+
         innerHTMLs += "<table width='600' height='600'>"
         for (var i = 0; i < this.height; i++) {
             innerHTMLs += "<tr>"
@@ -93,6 +110,19 @@ export default class Board {
     showFitness() {
         var fitnessHTML = document.getElementById("fitness")
         var innerHTMLs = `<h2> Fitness: ${this.fitness} </h2>`
+        fitnessHTML.innerHTML = innerHTMLs
+    }
+
+    mutate(mutation_rate) {
+        for (var i = 0; i < this.puzzles.length; i++) {
+            if (1 - Math.random() <= mutation_rate) {
+                this.puzzles[i].rotate = getRandomInt(0, 3)
+                this.puzzles[i].flip = getRandomInt(0, 1)
+                this.puzzles[i].pos.x = getRandomInt(0, this.height - 1)
+                this.puzzles[i].pos.y = getRandomInt(0, this.width - 1)
+            }
+        }
+        this.puzzles = shuffle(this.puzzles)
     }
 
     show() {
