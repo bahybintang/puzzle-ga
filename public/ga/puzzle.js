@@ -4,8 +4,19 @@ export default class Puzzle {
         this.pos = pos;
         this.rotate = rotate;
         this.flip = flip
+        this.id = this.getId(shape)
         this.rotates(rotate);
         this.flips(flip)
+    }
+
+    getId(shape) {
+        for (var i = 0; i < shape.length; i++) {
+            for (var j = 0; j < shape[i].length; j++) {
+                if (shape[i][j] != 0) {
+                    return shape[i][j]
+                }
+            }
+        }
     }
 
     // Shape harus NxN (persegi)
