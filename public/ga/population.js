@@ -66,7 +66,7 @@ export default class Population {
             newPop.push(tmp)
         }
 
-        for (var x = 0; x < size - Math.floor(0.2 * size); x++) {
+        for (var x = 0; x < Math.floor(0.7 * size); x++) {
             var p1 = 1 - Math.random(), found1 = false
             var p2 = 1 - Math.random(), found2 = false
 
@@ -140,6 +140,15 @@ export default class Population {
 
             newPop.push(newBoard)
         }
+
+        for (var i = size - 1; i >= Math.floor(0.9 * size); i--) {
+            var tmp = this.boards[i]
+            if(1 - Math.random() <= this.mutation_rate) {
+                tmp.mutate(this.mutation_rate)
+            }
+            newPop.push(tmp)
+        }
+
         this.boards = newPop
     }
 

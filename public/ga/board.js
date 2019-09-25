@@ -122,7 +122,7 @@ export default class Board {
                 this.puzzles[i].pos.y = getRandomInt(0, this.width - 1)
             }
         }
-        this.puzzles = shuffle(this.puzzles)
+        // this.puzzles = shuffle(this.puzzles)
     }
 
     show() {
