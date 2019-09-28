@@ -7,7 +7,7 @@ export default class Board {
         this.board = createArray(height, width)
         this.fitness = 0
         this.puzzles = []
-        if (isChild == undefined) this.init(template)
+        if (isChild == undefined)this.init(template)
         else this.initChild(template)
     }
 
@@ -18,10 +18,11 @@ export default class Board {
             }
         }
 
-        template = shuffle(template)
+        var temp = deepCopy(template)
+        temp = shuffle(temp)
 
         if (template != undefined) {
-            template.forEach((tmp, i) => {
+            temp.forEach((tmp, i) => {
                 var puzzle = new Puzzle(tmp, { x: getRandomInt(0, this.height - 1), y: getRandomInt(0, this.width - 1) }, getRandomInt(0, 3), getRandomInt(0, 1))
                 this.puzzles.push(puzzle)
                 this.insert(puzzle)
@@ -47,14 +48,14 @@ export default class Board {
     insert(puzzle) {
         var newBoard = deepCopy(this.board)
 
-        for (var i = 0; i < puzzle.shape.length; i++) {
-            for (var j = 0; j < puzzle.shape[i].length; j++) {
-                if (puzzle.shape[i][j] != 0) {
+        for (var i = 0; i < puzzle.getShape().length; i++) {
+            for (var j = 0; j < puzzle.getShape()[i].length; j++) {
+                if (puzzle.getShape()[i][j] != 0) {
                     if (i + puzzle.pos.x - 1 < 0 || j + puzzle.pos.y - 1 < 0 || i + puzzle.pos.x - 1 >= this.height || j + puzzle.pos.y - 1 >= this.width) {
                         return false;
                     }
                     else if (newBoard[i + puzzle.pos.x - 1][j + puzzle.pos.y - 1] == 0) {
-                        newBoard[i + puzzle.pos.x - 1][j + puzzle.pos.y - 1] = puzzle.shape[i][j]
+                        newBoard[i + puzzle.pos.x - 1][j + puzzle.pos.y - 1] = puzzle.getShape()[i][j]
                     }
                     else if (newBoard[i + puzzle.pos.x - 1][j + puzzle.pos.y - 1] != 0) {
                         return false;
@@ -115,14 +116,20 @@ export default class Board {
 
     mutate(mutation_rate) {
         for (var i = 0; i < this.puzzles.length; i++) {
-            if (1 - Math.random() <= mutation_rate) {
+            // if (1 - Math.random() <= mutation_rate) {
                 this.puzzles[i].rotate = getRandomInt(0, 3)
                 this.puzzles[i].flip = getRandomInt(0, 1)
                 this.puzzles[i].pos.x = getRandomInt(0, this.height - 1)
                 this.puzzles[i].pos.y = getRandomInt(0, this.width - 1)
-            }
+            // }
         }
-        // this.puzzles = shuffle(this.puzzles)
+        this.puzzles = shuffle(this.puzzles)
+    }
+
+    getById(id) {
+        for (var i of this.puzzles) {
+            if (i.id == id) return i
+        }
     }
 
     show() {

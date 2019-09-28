@@ -5,8 +5,6 @@ export default class Puzzle {
         this.rotate = rotate;
         this.flip = flip
         this.id = this.getId(shape)
-        this.rotates(rotate);
-        this.flips(flip)
     }
 
     getId(shape) {
@@ -20,10 +18,10 @@ export default class Puzzle {
     }
 
     // Shape harus NxN (persegi)
-    rotates(rotate) {
+    rotates() {
         var shape = deepCopy(this.shape)
         var N = shape.length
-        for (var x = 0; x < rotate; x++) {
+        for (var x = 0; x < this.rotate; x++) {
             for (var i = 0; i < Math.floor(N / 2); i++) {
                 for (var j = 0; j < N - i - 1; j++) {
                     var temp = shape[i][j];
@@ -35,13 +33,13 @@ export default class Puzzle {
             }
         }
 
-        this.shape = shape
+        return shape
     }
 
-    flips(flip) {
-        var N = this.shape.length
-        var shape = deepCopy(this.shape)
-        if (flip === 1) {
+    flips(input) {
+        var N = input.length
+        var shape = deepCopy(input)
+        if (this.flip === 1) {
             for (var i = 0; i < N; i++) {
                 for (var j = 0; j < N; j++) {
                     shape[j][i] = this.shape[j][N - i - 1];
@@ -49,7 +47,11 @@ export default class Puzzle {
             }
         }
 
-        this.shape = shape
+        return shape
+    }
+
+    getShape() {
+        return this.flips(this.rotates())
     }
 
     show() {
