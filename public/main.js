@@ -1,6 +1,7 @@
 import Population from "./ga/population.js"
 
-const CROMOSOME_SIZE = 50, POP_SIZE = 100, MUTATION_RATE = 0.1
+const CROMOSOME_SIZE = 50, POP_SIZE = 100, MUTATION_RATE = 0.05
+const BOARD_SIZE_X = 10, BOARD_SIZE_Y = 10
 
 var randomColor = []
 for (var i = 0; i < CROMOSOME_SIZE; i++) {
@@ -9,16 +10,16 @@ for (var i = 0; i < CROMOSOME_SIZE; i++) {
 
 localStorage.setItem("randomColor", JSON.stringify(randomColor))
 
-var population = new Population(POP_SIZE, CROMOSOME_SIZE, MUTATION_RATE)
+var population = new Population(POP_SIZE, CROMOSOME_SIZE, MUTATION_RATE, BOARD_SIZE_X, BOARD_SIZE_Y)
 
 population.showBestBoard()
 
 var interval = null
 var buttonNextGen = document.getElementById('inf')
 var generation = document.getElementById('generation')
+var gen = 0;
 
 buttonNextGen.onclick = function nextGen() {
-    var gen = 0;
     interval = setInterval(function () {
         var fit = population.nextGen()
         gen++

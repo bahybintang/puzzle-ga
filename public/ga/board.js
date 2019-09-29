@@ -111,27 +111,63 @@ export default class Board {
         fitnessHTML.innerHTML = innerHTMLs
     }
 
-    mutate() {
+    mutate(mutation_rate) {
         const mod = (x, n) => (x % n + n) % n
         for (var i = 0; i < this.puzzles.length; i++) {
-            if (Math.random() > 0.5) {
-                var plus = Math.random() > 0.5 ? 1 : -1
-                this.puzzles.rotate = mod(this.puzzles.rotate + plus, 4)
-            }
+            if (Math.random() < mutation_rate) {
+                if (Math.random() > 0.5) {
+                    var plus = Math.random() > 0.5 ? 1 : -1
+                    this.puzzles.rotate = mod(this.puzzles.rotate + plus, 4)
+                }
 
-            if (Math.random() > 0.5) {
-                var plus = Math.random() > 0.5 ? 1 : -1
-                this.puzzles[i].pos.x = mod(this.puzzles[i].pos.x + plus, this.height)
-            }
+                if (Math.random() > 0.5) {
+                    var plus = Math.random() > 0.5 ? 1 : -1
+                    this.puzzles[i].pos.x = mod(this.puzzles[i].pos.x + plus, this.height)
+                }
 
-            if (Math.random() > 0.5) {
-                var plus = Math.random() > 0.5 ? 1 : -1
-                this.puzzles[i].pos.x = mod(this.puzzles[i].pos.y + plus, this.width)
-            }
+                if (Math.random() > 0.5) {
+                    var plus = Math.random() > 0.5 ? 1 : -1
+                    this.puzzles[i].pos.x = mod(this.puzzles[i].pos.y + plus, this.width)
+                }
 
-            this.puzzles[i].flip = getRandomInt(0, 1)
+                this.puzzles[i].flip = getRandomInt(0, 1)
+            }
         }
-        if (Math.random() < 0.5) this.puzzles = shuffle(this.puzzles)
+        var idx = getRandomInt(0, Math.floor((this.puzzles.length - 1) / 2))
+        var idx2 = getRandomInt(Math.floor((this.puzzles.length - 1) / 2) + 1, this.puzzles.length - 1)
+        var temp = this.puzzles[idx]
+        this.puzzles[idx] = this.puzzles[idx2];
+        this.puzzles[idx2] = temp
+    }
+
+    mutateGoodGen(mutation_rate) {
+        const mod = (x, n) => (x % n + n) % n
+        for (var i = 0; i < this.puzzles.length; i++) {
+            if (Math.random() < mutation_rate) {
+                if (Math.random() > 0.5) {
+                    var plus = Math.random() > 0.5 ? 1 : -1
+                    this.puzzles.rotate = mod(this.puzzles.rotate + plus, 4)
+                }
+
+                if (Math.random() > 0.5) {
+                    var plus = Math.random() > 0.5 ? 1 : -1
+                    this.puzzles[i].pos.x = mod(this.puzzles[i].pos.x + plus, this.height)
+                }
+
+                if (Math.random() > 0.5) {
+                    var plus = Math.random() > 0.5 ? 1 : -1
+                    this.puzzles[i].pos.x = mod(this.puzzles[i].pos.y + plus, this.width)
+                }
+
+                this.puzzles[i].flip = getRandomInt(0, 1)
+            }
+        }
+        var idx = getRandomInt(0, Math.floor((this.puzzles.length - 1) / 2))
+        var idx2 = getRandomInt(Math.floor((this.puzzles.length - 1) / 2) + 1, this.puzzles.length - 1)
+        var temp = this.puzzles[idx]
+        this.puzzles[idx2].pos = { ...temp.pos }
+        this.puzzles[idx] = this.puzzles[idx2];
+        this.puzzles[idx2] = temp
     }
 
     getById(id) {
