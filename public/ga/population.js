@@ -13,6 +13,7 @@ export default class Population {
 
     init() {
         var template = Template.generateTemplate(this.cromosome_size)
+
         for (var i = 0; i < this.size; i++) {
             this.boards.push(new Board(10, 10, template))
         }
@@ -194,6 +195,8 @@ export default class Population {
     nextGen() {
         this.crossover()
         this.showBestBoard()
-        console.log(this.getBestBoard().fitness)
+        var bestFit = this.getBestBoard().fitness
+        console.log(bestFit)
+        return bestFit
     }
 }

@@ -84,11 +84,7 @@ export default class Board {
 
     showBoard() {
         var htmlBoard = document.getElementById('board')
-        var randomColor = []
-
-        for (var i = 0; i < this.puzzles.length; i++) {
-            randomColor.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16))
-        }
+        var randomColor = JSON.parse(localStorage.getItem("randomColor"))
 
         var innerHTMLs = ""
 
@@ -115,7 +111,7 @@ export default class Board {
         fitnessHTML.innerHTML = innerHTMLs
     }
 
-    mutate(mutation_rate) {
+    mutate() {
         const mod = (x, n) => (x % n + n) % n
         for (var i = 0; i < this.puzzles.length; i++) {
             if (Math.random() > 0.5) {
@@ -135,7 +131,7 @@ export default class Board {
 
             this.puzzles[i].flip = getRandomInt(0, 1)
         }
-        if (Math.random() < mutation_rate) this.puzzles = shuffle(this.puzzles)
+        if (Math.random() < 0.5) this.puzzles = shuffle(this.puzzles)
     }
 
     getById(id) {
