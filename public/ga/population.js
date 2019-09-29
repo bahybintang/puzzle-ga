@@ -58,9 +58,10 @@ export default class Population {
             }
         }
 
-        var newPop = createArray()
+        var newPop = []
         for (var i = 0; i < Math.floor(0.1 * size); i++) {
-            newPop.push(this.copyBoard(this.boards[i]))
+            // newPop[i] = (this.copyBoard(this.boards[i]))
+            newPop[i] = this.boards[i]
         }
 
         for (var x = 0; x < Math.floor(0.8 * size); x++) {
@@ -69,18 +70,20 @@ export default class Population {
 
             for (var i = 0; i < size; i++) {
                 if (cumprob[i] >= p1 && !found1) {
-                    p1 = this.copyBoard(this.boards[i])
+                    // p1 = this.copyBoard(this.boards[i])
+                    p1 = this.boards[i]
                     found1 = true
                 }
                 if (cumprob[i] >= p2 && !found2) {
-                    p2 = this.copyBoard(this.boards[i])
+                    // p2 = this.copyBoard(this.boards[i])
+                    p2 = this.boards[i]
                     found2 = true
                 }
                 if (found1 && found2) break;
             }
 
             var pivot1 = Math.floor(0.2 * this.cromosome_size), pivot2 = Math.floor(0.4 * this.cromosome_size)
-            var child = createArray(this.cromosome_size)
+            var child = []
             for (var i = pivot1; i < pivot2; i++) {
                 child[i] = this.copyPuzzle(p2.puzzles[i])
             }
@@ -132,19 +135,22 @@ export default class Population {
             if (1 - Math.random() <= this.mutation_rate) {
                 newBoard.mutate(this.mutation_rate)
             }
-
+            // console.log(newPop)
             newPop.push(newBoard)
+            // console.log(newPop)
         }
 
         for (var j = size - 1; j >= Math.floor(0.9 * size); j--) {
-            var tmp = this.copyBoard(this.boards[j])
+            // var tmp = this.copyBoard(this.boards[j])
+            var tmp = this.boards[j]
             if (1 - Math.random() <= this.mutation_rate) {
                 tmp.mutate(this.mutation_rate)
             }
-            newPop.push(this.copyBoard(tmp))
+            // newPop.push(this.copyBoard(tmp))
+            newPop.push(tmp)
         }
 
-        console.log(newPop)
+        // console.log(newPop)
         this.boards = newPop
     }
 
@@ -156,27 +162,12 @@ export default class Population {
         var keys = Object.keys(puzz1)
         for (var key of keys) {
             var yesOrNo = Math.random() <= p1.fitness / totFit
-            if (key == 'pos') {
+            if (key != 'shape' && key != 'id') {
                 if (yesOrNo) {
-                    child[key].x = puzz1[key].x
+                    child[key] = { ...puzz1[key] }
                 }
                 else {
-                    child[key].x = puzz2[key].x
-                }
-                yesOrNo = Math.random() <= p1.fitness / totFit
-                if (yesOrNo) {
-                    child[key].y = puzz1[key].y
-                }
-                else {
-                    child[key].y = puzz2[key].y
-                }
-            }
-            else if (key != 'shape' && key != 'id') {
-                if (yesOrNo) {
-                    child[key] = puzz1[key]
-                }
-                else {
-                    child[key] = puzz2[key]
+                    child[key] = { ...puzz2[key] }
                 }
             }
         }

@@ -7,7 +7,7 @@ export default class Board {
         this.board = createArray(height, width)
         this.fitness = 0
         this.puzzles = []
-        if (isChild == undefined)this.init(template)
+        if (isChild == undefined) this.init(template)
         else this.initChild(template)
     }
 
@@ -28,6 +28,7 @@ export default class Board {
                 this.insert(puzzle)
             });
         }
+        this.calculateFitness()
     }
 
     initChild(puzzles) {
@@ -43,6 +44,7 @@ export default class Board {
                 this.insert(puzzle)
             })
         }
+        this.calculateFitness()
     }
 
     insert(puzzle) {
@@ -64,7 +66,6 @@ export default class Board {
             }
         }
         this.board = newBoard
-        this.calculateFitness()
         return true;
     }
 
@@ -86,7 +87,7 @@ export default class Board {
         var randomColor = []
 
         for (var i = 0; i < this.puzzles.length; i++) {
-            randomColor.push('#'+(Math.random()*0xFFFFFF<<0).toString(16))
+            randomColor.push('#' + (Math.random() * 0xFFFFFF << 0).toString(16))
         }
 
         var innerHTMLs = ""
@@ -115,15 +116,26 @@ export default class Board {
     }
 
     mutate(mutation_rate) {
+        const mod = (x, n) => (x % n + n) % n
         for (var i = 0; i < this.puzzles.length; i++) {
-            // if (1 - Math.random() <= mutation_rate) {
-                this.puzzles[i].rotate = getRandomInt(0, 3)
-                this.puzzles[i].flip = getRandomInt(0, 1)
-                this.puzzles[i].pos.x = getRandomInt(0, this.height - 1)
-                this.puzzles[i].pos.y = getRandomInt(0, this.width - 1)
-            // }
+            if (Math.random() > 0.5) {
+                var plus = Math.random() > 0.5 ? 1 : -1
+                this.puzzles.rotate = mod(this.puzzles.rotate + plus, 4)
+            }
+
+            if (Math.random() > 0.5) {
+                var plus = Math.random() > 0.5 ? 1 : -1
+                this.puzzles[i].pos.x = mod(this.puzzles[i].pos.x + plus, this.height)
+            }
+
+            if (Math.random() > 0.5) {
+                var plus = Math.random() > 0.5 ? 1 : -1
+                this.puzzles[i].pos.x = mod(this.puzzles[i].pos.y + plus, this.width)
+            }
+
+            this.puzzles[i].flip = getRandomInt(0, 1)
         }
-        this.puzzles = shuffle(this.puzzles)
+        if (Math.random() < mutation_rate) this.puzzles = shuffle(this.puzzles)
     }
 
     getById(id) {
