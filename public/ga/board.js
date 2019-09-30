@@ -142,7 +142,7 @@ export default class Board {
             if (Math.random() < mutation_rate) {
                 if (Math.random() > 0.5) {
                     var plus = Math.random() > 0.5 ? 1 : -1
-                    this.puzzles.rotate = mod(this.puzzles.rotate + plus, 4)
+                    this.puzzles[i].rotate = mod(this.puzzles[i].rotate + plus, 4)
                 }
 
                 if (Math.random() > 0.5) {

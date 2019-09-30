@@ -156,10 +156,12 @@ export default class Population {
             var yesOrNo = Math.random() <= p1.fitness / totFit
             if (key != 'shape' && key != 'id') {
                 if (yesOrNo) {
-                    child[key] = { ...puzz1[key] }
+                    if(typeof(child[key]) == 'object') child[key] = { ...puzz1[key] }
+                    else child[key] = puzz1[key]
                 }
                 else {
-                    child[key] = { ...puzz2[key] }
+                    if(typeof(child[key]) == 'object') child[key] = { ...puzz2[key] }
+                    else child[key] = puzz2[key]
                 }
             }
         }
