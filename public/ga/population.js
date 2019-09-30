@@ -3,11 +3,15 @@ import Board from "./board.js";
 import Template from "./template.js"
 import Puzzle from "./puzzle.js";
 export default class Population {
-    constructor(size, cromosome_size, mutation_rate) {
+    constructor(size, cromosome_size, mutation_rate, bx, by) {
         this.mutation_rate = mutation_rate
         this.size = size
         this.cromosome_size = cromosome_size
         this.boards = []
+        this.boardsize = {
+            x: bx,
+            y: by
+        }
         this.init()
     }
 
@@ -15,22 +19,14 @@ export default class Population {
         var template = Template.generateTemplate(this.cromosome_size)
 
         for (var i = 0; i < this.size; i++) {
-            this.boards.push(new Board(10, 10, template))
+            this.boards.push(new Board(this.boardsize.x, this.boardsize.y, template))
         }
     }
 
     getBestBoard() {
-        var max = {
-            fitness: 0
-        }
-
-        this.boards.forEach((item, idx) => {
-            if (item.fitness > max.fitness) {
-                max = item
-            }
-        })
-
-        return max
+        this.boards.sort((a, b) => { return b.fitness - a.fitness })
+        if (this.boards[1].fitness == this.boards[0].fitness) return this.boards[1]
+        else return this.boards[0]
     }
 
     showBestBoard() {
@@ -41,7 +37,6 @@ export default class Population {
 
     crossover() {
         var size = this.size
-        this.boards.sort((a, b) => { return b.fitness - a.fitness })
 
         // Generate cumulative probability
         var totalFitness = 0
@@ -61,8 +56,11 @@ export default class Population {
 
         var newPop = []
         for (var i = 0; i < Math.floor(0.1 * size); i++) {
-            // newPop[i] = (this.copyBoard(this.boards[i]))
-            newPop[i] = this.boards[i]
+            var tmp = this.boards[i]
+            if (1 - Math.random() < this.mutation_rate && i > 0) {
+                tmp.mutate(this.mutation_rate)
+            }
+            newPop[i] = tmp
         }
 
         for (var x = 0; x < Math.floor(0.8 * size); x++) {
@@ -71,22 +69,21 @@ export default class Population {
 
             for (var i = 0; i < size; i++) {
                 if (cumprob[i] >= p1 && !found1) {
-                    // p1 = this.copyBoard(this.boards[i])
                     p1 = this.boards[i]
                     found1 = true
                 }
                 if (cumprob[i] >= p2 && !found2) {
-                    // p2 = this.copyBoard(this.boards[i])
                     p2 = this.boards[i]
                     found2 = true
                 }
                 if (found1 && found2) break;
             }
 
-            var pivot1 = Math.floor(0.2 * this.cromosome_size), pivot2 = Math.floor(0.4 * this.cromosome_size)
+            var pivot1 = Math.floor(getRandomInt(0, this.cromosome_size - 2))
+            var pivot2 = Math.floor(getRandomInt(pivot1 + 1, this.cromosome_size - 1))
             var child = []
             for (var i = pivot1; i < pivot2; i++) {
-                child[i] = this.copyPuzzle(p2.puzzles[i])
+                child[i] = this.crossGen(this.copyPuzzle(p2.puzzles[i]), p1, p2)
             }
 
             var i = pivot2
@@ -131,27 +128,21 @@ export default class Population {
                 }
             }
 
-            var newBoard = new Board(10, 10, child, true)
+            var newBoard = new Board(this.boardsize.x, this.boardsize.y, child, true)
 
             if (1 - Math.random() <= this.mutation_rate) {
                 newBoard.mutate(this.mutation_rate)
             }
-            // console.log(newPop)
             newPop.push(newBoard)
-            // console.log(newPop)
         }
 
         for (var j = size - 1; j >= Math.floor(0.9 * size); j--) {
-            // var tmp = this.copyBoard(this.boards[j])
             var tmp = this.boards[j]
             if (1 - Math.random() <= this.mutation_rate) {
                 tmp.mutate(this.mutation_rate)
             }
-            // newPop.push(this.copyBoard(tmp))
             newPop.push(tmp)
         }
-
-        // console.log(newPop)
         this.boards = newPop
     }
 
