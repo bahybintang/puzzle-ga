@@ -24,17 +24,9 @@ export default class Population {
     }
 
     getBestBoard() {
-        var max = {
-            fitness: 0
-        }
-
-        this.boards.forEach((item, idx) => {
-            if (item.fitness > max.fitness) {
-                max = item
-            }
-        })
-
-        return max
+        this.boards.sort((a, b) => { return b.fitness - a.fitness })
+        if (this.boards[1].fitness == this.boards[0].fitness) return this.boards[1]
+        else return this.boards[0]
     }
 
     showBestBoard() {
@@ -45,7 +37,6 @@ export default class Population {
 
     crossover() {
         var size = this.size
-        this.boards.sort((a, b) => { return b.fitness - a.fitness })
 
         // Generate cumulative probability
         var totalFitness = 0
@@ -66,8 +57,8 @@ export default class Population {
         var newPop = []
         for (var i = 0; i < Math.floor(0.1 * size); i++) {
             var tmp = this.boards[i]
-            if (1 - Math.random() < this.mutation_rate) {
-                tmp.mutateGoodGen(this.mutation_rate)
+            if (1 - Math.random() < this.mutation_rate && i > 0) {
+                tmp.mutate(this.mutation_rate)
             }
             newPop[i] = tmp
         }
@@ -88,7 +79,8 @@ export default class Population {
                 if (found1 && found2) break;
             }
 
-            var pivot1 = Math.floor(0.2 * this.cromosome_size), pivot2 = Math.floor(0.4 * this.cromosome_size)
+            var pivot1 = Math.floor(getRandomInt(0, this.cromosome_size - 2))
+            var pivot2 = Math.floor(getRandomInt(pivot1 + 1, this.cromosome_size - 1))
             var child = []
             for (var i = pivot1; i < pivot2; i++) {
                 child[i] = this.crossGen(this.copyPuzzle(p2.puzzles[i]), p1, p2)

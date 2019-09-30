@@ -7,6 +7,7 @@ export default class Board {
         this.board = createArray(height, width)
         this.fitness = 0
         this.puzzles = []
+        this.emptyCell = []
         if (isChild == undefined) this.init(template)
         else this.initChild(template)
     }
@@ -47,6 +48,21 @@ export default class Board {
         this.calculateFitness()
     }
 
+    mutateReInit() {
+        for (var i = 0; i < this.board.length; i++) {
+            for (var j = 0; j < this.board[i].length; j++) {
+                this.board[i][j] = 0
+            }
+        }
+
+        if (this.puzzles != undefined) {
+            this.puzzles.forEach(puzzle => {
+                this.insert(puzzle)
+            })
+        }
+        this.calculateFitness()
+    }
+
     insert(puzzle) {
         var newBoard = deepCopy(this.board)
 
@@ -71,13 +87,22 @@ export default class Board {
 
     calculateFitness() {
         var fitness = 0
+        var tmp = []
         for (var i = 0; i < this.height; i++) {
             for (var j = 0; j < this.width; j++) {
                 if (this.board[i][j] != 0) {
+
                     fitness++;
+                }
+                else {
+                    tmp.push({
+                        x: i,
+                        y: j
+                    })
                 }
             }
         }
+        this.emptyCell = tmp
         this.fitness = fitness
         return fitness
     }
@@ -88,7 +113,7 @@ export default class Board {
 
         var innerHTMLs = ""
 
-        innerHTMLs += "<table width='600' height='600'>"
+        innerHTMLs += `<table class="center" width='500' height='500'>`
         for (var i = 0; i < this.height; i++) {
             innerHTMLs += "<tr>"
             for (var j = 0; j < this.width; j++) {
@@ -129,34 +154,10 @@ export default class Board {
                     var plus = Math.random() > 0.5 ? 1 : -1
                     this.puzzles[i].pos.x = mod(this.puzzles[i].pos.y + plus, this.width)
                 }
-
-                this.puzzles[i].flip = getRandomInt(0, 1)
-            }
-        }
-        var idx = getRandomInt(0, Math.floor((this.puzzles.length - 1) / 2))
-        var idx2 = getRandomInt(Math.floor((this.puzzles.length - 1) / 2) + 1, this.puzzles.length - 1)
-        var temp = this.puzzles[idx]
-        this.puzzles[idx] = this.puzzles[idx2];
-        this.puzzles[idx2] = temp
-    }
-
-    mutateGoodGen(mutation_rate) {
-        const mod = (x, n) => (x % n + n) % n
-        for (var i = 0; i < this.puzzles.length; i++) {
-            if (Math.random() < mutation_rate) {
                 if (Math.random() > 0.5) {
-                    var plus = Math.random() > 0.5 ? 1 : -1
-                    this.puzzles.rotate = mod(this.puzzles.rotate + plus, 4)
-                }
-
-                if (Math.random() > 0.5) {
-                    var plus = Math.random() > 0.5 ? 1 : -1
-                    this.puzzles[i].pos.x = mod(this.puzzles[i].pos.x + plus, this.height)
-                }
-
-                if (Math.random() > 0.5) {
-                    var plus = Math.random() > 0.5 ? 1 : -1
-                    this.puzzles[i].pos.x = mod(this.puzzles[i].pos.y + plus, this.width)
+                    var idxEmpty = getRandomInt(0, this.emptyCell.length - 1)
+                    var idxPuzzle = getRandomInt(0, this.puzzles.length - 1)
+                    this.puzzles[idxPuzzle].pos = { ...this.emptyCell[idxEmpty] }
                 }
 
                 this.puzzles[i].flip = getRandomInt(0, 1)
@@ -168,6 +169,7 @@ export default class Board {
         this.puzzles[idx2].pos = { ...temp.pos }
         this.puzzles[idx] = this.puzzles[idx2];
         this.puzzles[idx2] = temp
+        this.mutateReInit()
     }
 
     getById(id) {
