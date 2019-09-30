@@ -1,7 +1,7 @@
 // import Puzzle from "./puzzle.js";
-import Board from "./board.js";
-import Template from "./template.js"
-import Puzzle from "./puzzle.js";
+import Board from "./board.js.js";
+import Template from "./template.js.js"
+import Puzzle from "./puzzle.js.js";
 export default class Population {
     constructor(size, cromosome_size, mutation_rate, bx, by) {
         this.mutation_rate = mutation_rate
@@ -156,10 +156,12 @@ export default class Population {
             var yesOrNo = Math.random() <= p1.fitness / totFit
             if (key != 'shape' && key != 'id') {
                 if (yesOrNo) {
-                    child[key] = { ...puzz1[key] }
+                    if (typeof (child[key]) == 'object') child[key] = { ...puzz1[key] }
+                    else child[key] = puzz1[key]
                 }
                 else {
-                    child[key] = { ...puzz2[key] }
+                    if (typeof (child[key]) == 'object') child[key] = { ...puzz2[key] }
+                    else child[key] = puzz2[key]
                 }
             }
         }
