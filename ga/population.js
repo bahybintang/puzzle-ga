@@ -1,7 +1,7 @@
 // import Puzzle from "./puzzle.js";
-import Board from "./board.js.js";
-import Template from "./template.js.js"
-import Puzzle from "./puzzle.js.js";
+import Board from "./board.js";
+import Template from "./template.js"
+import Puzzle from "./puzzle.js";
 export default class Population {
     constructor(size, cromosome_size, mutation_rate, bx, by) {
         this.mutation_rate = mutation_rate
