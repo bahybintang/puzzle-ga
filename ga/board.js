@@ -1,4 +1,4 @@
-import Puzzle from "./puzzle.js"
+import Puzzle from "./puzzle.js.js"
 
 export default class Board {
     constructor(height, width, template, isChild) {
@@ -152,7 +152,7 @@ export default class Board {
 
                 if (Math.random() > 0.5) {
                     var plus = Math.random() > 0.5 ? 1 : -1
-                    this.puzzles[i].pos.x = mod(this.puzzles[i].pos.y + plus, this.width)
+                    this.puzzles[i].pos.y = mod(this.puzzles[i].pos.y + plus, this.width)
                 }
                 if (Math.random() > 0.5) {
                     var idxEmpty = getRandomInt(0, this.emptyCell.length - 1)
