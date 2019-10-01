@@ -63,6 +63,7 @@ export default class Population {
             newPop[i] = tmp
         }
 
+        // The real crossover
         for (var x = 0; x < Math.floor(0.8 * size); x++) {
             var p1 = 1 - Math.random(), found1 = false
             var p2 = 1 - Math.random(), found2 = false
