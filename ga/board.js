@@ -1,4 +1,4 @@
-import Puzzle from "./puzzle.js.js"
+import Puzzle from "./puzzle.js"
 
 export default class Board {
     constructor(height, width, template, isChild) {
