@@ -113,7 +113,7 @@ export default class Board {
 
         var innerHTMLs = ""
 
-        innerHTMLs += `<table class="center" width='500' height='500'>`
+        innerHTMLs += `<table class="center" width='${Math.floor((this.width / this.height) * 550)}' height='550'>`
         for (var i = 0; i < this.height; i++) {
             innerHTMLs += "<tr>"
             for (var j = 0; j < this.width; j++) {
