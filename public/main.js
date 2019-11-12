@@ -35,6 +35,12 @@ document.getElementById('inputView').onsubmit = function (e) {
 
     // Show best cromosome in population
     population.showBestBoard()
+
+    // Show indivdual puzzles
+    population.showPuzzles()
+
+    // Clear the input from window
+    document.getElementById("inputView").style.display = "none"
 }
 
 // Button infinite next generation

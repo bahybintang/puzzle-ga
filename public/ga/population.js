@@ -9,6 +9,7 @@ export default class Population {
         this.size = population_size
         this.cromosome_size = cromosome_size
         this.boards = []
+        this.template = []
         this.boardsize = {
             x: board_x,
             y: board_y
@@ -18,10 +19,10 @@ export default class Population {
 
     // Generate initial puzzle and push make new board then push to population
     init() {
-        var template = Template.generateTemplate(this.cromosome_size)
+        this.template = Template.generateTemplate(this.cromosome_size)
 
         for (var i = 0; i < this.size; i++) {
-            this.boards.push(new Board(this.boardsize.x, this.boardsize.y, template))
+            this.boards.push(new Board(this.boardsize.x, this.boardsize.y, this.template))
         }
     }
 
@@ -43,6 +44,36 @@ export default class Population {
         var bestBoard = this.getBestBoard()
         bestBoard.showBoard()
         bestBoard.showFitness()
+    }
+
+    // Show individual puzzles
+    showPuzzles() {
+        var puzzlesView = document.getElementById('puzzlesView')
+        var randomColor = JSON.parse(localStorage.getItem("randomColor"))
+        var innerHTMLs = "<h2 align='center' style='padding-bottom: 20px;'> Puzzle list </h2>"
+
+        var i
+        for (i = 0; i < this.template.length; i++) {
+            if (i % 3 == 0) innerHTMLs += `<div style='padding: 0px 30vh 30px 30vh;' class='row'>`
+            innerHTMLs += `<div class='col'><table class="center" width='100' height='100'>`
+            for (var j = 0; j < 3; j++) {
+                innerHTMLs += "<tr>"
+                for (var k = 0; k < 3; k++) {
+                    if (this.template[i][j][k] != 0) {
+                        innerHTMLs += `<td bgcolor='${randomColor[this.template[i][j][k]]}'></td>`
+                    }
+                    else {
+                        innerHTMLs += "<td bgcolor='#FFFFFF'></td>"
+                    }
+                }
+                innerHTMLs += "</tr>"
+            }
+            innerHTMLs += "</table></div>"
+            if (i % 3 == 2) innerHTMLs += `</div>`
+        }
+        if (i % 3 != 0) innerHTMLs += `</div>`
+
+        puzzlesView.innerHTML = innerHTMLs
     }
 
     crossover() {
