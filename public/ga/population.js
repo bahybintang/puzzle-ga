@@ -106,8 +106,6 @@ export default class Population {
 
             // SECTION
             // [ first | second | third ]
-            // <-- 80% cromosome size -->
-
 
             // Get second section from parent 2
             for (var i = pivot1; i < pivot2; i++) {
@@ -127,7 +125,6 @@ export default class Population {
                 }
             }
 
-            // Get first section from the rest of parent 1 and 2
             for (var j = 0; j < pivot2; j++) {
                 if (i >= this.cromosome_size) {
                     break;
@@ -139,6 +136,7 @@ export default class Population {
                 }
             }
 
+            // Get first section from parent 1
             i = 0
             for (var j = pivot2; j < this.cromosome_size; j++) {
                 if (i >= pivot1) {

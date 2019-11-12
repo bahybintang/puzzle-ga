@@ -9,6 +9,7 @@ export default class Board {
         this.fitness = 0
         this.puzzles = []
         this.emptyCell = []
+        this.includedPuzzle = []
         if (isChild == undefined) this.init(template)
         else this.initChild(template)
     }
@@ -86,12 +87,11 @@ export default class Board {
     calculateFitness() {
         var fitness = 0
         var tmp = []
+        this.includedPuzzle = []
         for (var i = 0; i < this.height; i++) {
             for (var j = 0; j < this.width; j++) {
-                if (this.board[i][j] != 0) {
-
-                    fitness++;
-                }
+                if (!this.includedPuzzle.includes(this.board[i][j])) this.includedPuzzle.push(this.board[i][j])
+                if (this.board[i][j] !== 0) fitness++
                 else {
                     tmp.push({
                         x: i,
@@ -103,6 +103,14 @@ export default class Board {
         this.emptyCell = tmp
         this.fitness = fitness
         return fitness
+    }
+
+    // Get included puzzles id
+    // return array
+    getIncludedPuzzles() {
+        let idx = this.includedPuzzle.indexOf(0)
+        if (idx != -1) return this.includedPuzzle.splice(idx, 1)
+        else return this.includedPuzzle
     }
 
     // Show board to web page
@@ -152,7 +160,7 @@ export default class Board {
                     var plus = Math.random() > 0.5 ? 1 : -1
                     this.puzzles[i].pos.x = mod(this.puzzles[i].pos.x + plus, this.height)
                 }
-                
+
                 // Mutate the y location by moving +1 or -1
                 if (Math.random() > 0.5) {
                     var plus = Math.random() > 0.5 ? 1 : -1
