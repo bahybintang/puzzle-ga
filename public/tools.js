@@ -1,3 +1,4 @@
+// Create new array
 function createArray(length) {
     var arr = new Array(length || 0),
         i = length;
@@ -10,12 +11,14 @@ function createArray(length) {
     return arr;
 }
 
+// Get random integer between min and max inclusive
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// Deep copy an array
 function deepCopy(currentArray) {
     var newArray = [];
 
@@ -25,6 +28,7 @@ function deepCopy(currentArray) {
     return newArray
 }
 
+// Shuffle the array using Knuth shuffle
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 

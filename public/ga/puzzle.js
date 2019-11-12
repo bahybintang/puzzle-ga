@@ -1,4 +1,5 @@
 export default class Puzzle {
+    // Constructor
     constructor(shape, pos, rotate, flip) {
         this.shape = shape
         this.pos = pos;
@@ -7,6 +8,7 @@ export default class Puzzle {
         this.id = this.getId(shape)
     }
 
+    // Get id of shape
     getId(shape) {
         for (var i = 0; i < shape.length; i++) {
             for (var j = 0; j < shape[i].length; j++) {
@@ -17,7 +19,8 @@ export default class Puzzle {
         }
     }
 
-    // Shape harus NxN (persegi)
+    // Shape must be NxN
+    // rotate the puzzles
     rotates() {
         var shape = deepCopy(this.shape)
         var N = shape.length
@@ -36,6 +39,7 @@ export default class Puzzle {
         return shape
     }
 
+    // Flip the puzzle
     flips(input) {
         var N = input.length
         var shape = deepCopy(input)
@@ -50,10 +54,12 @@ export default class Puzzle {
         return shape
     }
 
+    // Get shape of puzzle after flip and rotate
     getShape() {
         return this.flips(this.rotates())
     }
 
+    // Show shape in console
     show() {
         console.log(this.shape)
     }

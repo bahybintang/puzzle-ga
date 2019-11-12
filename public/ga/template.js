@@ -43,8 +43,10 @@ export default {
             ]
         ]
 
+        // Init empty template
         var template = []
         for (var i = 0; i < count; i++) {
+            // Get random pattern in pattern template
             var gotPattern = deepCopy(pattern[getRandomInt(0, pattern.length - 1)])
             for (var x = 0; x < gotPattern.length; x++) {
                 for (var y = 0; y < gotPattern[x].length; y++) {
@@ -53,6 +55,7 @@ export default {
                     }
                 }
             }
+            // Push pattern to template
             template.push(gotPattern)
         }
         return template
