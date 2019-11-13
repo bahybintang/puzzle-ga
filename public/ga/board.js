@@ -167,8 +167,8 @@ export default class Board {
                     this.puzzles[i].pos.y = mod(this.puzzles[i].pos.y + plus, this.width)
                 }
 
-                // Mutate the permutation, swap the position of
-                // two random puzzles
+                // Mutate the position of a puzzles
+                // to an empty position
                 if (Math.random() > 0.5) {
                     var idxEmpty = getRandomInt(0, this.emptyCell.length - 1)
                     var idxPuzzle = getRandomInt(0, this.puzzles.length - 1)
@@ -180,10 +180,11 @@ export default class Board {
             }
         }
 
-        // Swap the position of two puzzles p1 and p2
+        // Swap the permutation of two puzzles p1 and p2
         // p1 index between 0 - (puzzles.length - 1) / 2
         // p2 index between between (puzzle.length - 1) / 2 + 1
         // and puzzles.length - 1
+        // and make the position of p2 same as p1
         var idx = getRandomInt(0, Math.floor((this.puzzles.length - 1) / 2))
         var idx2 = getRandomInt(Math.floor((this.puzzles.length - 1) / 2) + 1, this.puzzles.length - 1)
         var temp = this.puzzles[idx]
