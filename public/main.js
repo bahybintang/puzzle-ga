@@ -14,7 +14,7 @@ var randomColor = []
 // Params intitialization
 document.getElementById('inputView').onsubmit = function (e) {
     e.preventDefault()
-    
+
     // Assign params value
     BOARD_SIZE_X = document.forms["formInput"].board_height.value * 1
     BOARD_SIZE_Y = document.forms["formInput"].board_width.value * 1
@@ -64,5 +64,8 @@ stopBTN.onclick = function () {
 // Button next generation
 var buttonNextGen = document.getElementById('nextgen')
 buttonNextGen.onclick = function nextGen() {
-    population.nextGen(), 1000
+    population.nextGen()
+    gen++
+    var innerHTMLs = `<h2> Generation: ${gen} </h2>`
+    generation.innerHTML = innerHTMLs
 }
